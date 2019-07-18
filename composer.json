@@ -1,7 +1,8 @@
 {
-    "name": "TOTP Test Demo",
+    "name": "alexhorner/totp-test-temo",
     "description": "OTPHP based TOTP demo",
     "require": {
-        "spomky-labs/otphp": "10.*.*"
+        "spomky-labs/otphp": "10.*.*",
+        "endroid/qr-code": "3.*"
     }
 }
