@@ -1,0 +1,7 @@
+{
+    "name": "2FA test project",
+    "description": "Just a test",
+    "require": {
+        "spomky-labs/otphp": "10.*.*"
+    }
+}
