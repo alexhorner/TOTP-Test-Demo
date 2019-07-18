@@ -1,6 +1,6 @@
 {
     "name": "TOTP Test Demo",
-    "description": "PHPOTP based TOTP demo",
+    "description": "OTPHP based TOTP demo",
     "require": {
         "spomky-labs/otphp": "10.*.*"
     }
