@@ -1,5 +1,5 @@
-#TOTP Test Demo
-#####OTPHP based TOTP demo
+# TOTP Test Demo
+##### OTPHP based TOTP demo
 
 This TOTP demo, written in PHP, is a single-page TOTP demo to show TOTP in action. It's compatible with Google Authenticator too!
 
