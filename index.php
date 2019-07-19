@@ -59,6 +59,8 @@
         </h1>
         <br />
         <?php print('The OTP URI is <input type="text" value="'.$otp->getProvisioningUri().'" /> and should be copied and saved if you want to reproduce this key'); ?><br /><br />
+        Label: <?php print($otp->getLabel()); ?><br />
+        Issuer: <?php print($otp->getIssuer()); ?><br /><br />
         The below QR code can be scanned with Google Authenticator to add it to the list. Afterwards, this page and Google Authenticator should display the same numbers every refresh<br />
         <img src="data:image/png;base64,<?php print($qrCodeEncoded); ?>" /><br /><br />
         <form method="POST">
