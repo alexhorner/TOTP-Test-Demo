@@ -12,22 +12,27 @@
     use Endroid\QrCode\QrCode;
     use Endroid\QrCode\Response\QrCodeResponse;
 
+    if(isset($_POST["load"]) && $_POST["load"] != ""){
+        header("Location: /?uri=".urlencode(base64_encode($_POST["load"])));
+        die();
+    }
+
     if(isset($_GET["label"]) && isset($_GET["issuer"]) && $_GET["label"] != ""){
         $otp = TOTP::create(null, 30);
         $otp->setLabel($_GET["label"]);
         if($_GET["issuer"] != ""){
             $otp->setIssuer($_GET["issuer"]);
         }
-        header("Location: /?uri=".urlencode($otp->getProvisioningUri()));
+        header("Location: /?uri=".urlencode(base64_encode($otp->getProvisioningUri())));
         die();
     }
 
     if(isset($_GET["uri"]) && $_GET["uri"] != ""){
-        $otp = Factory::loadFromProvisioningUri($_GET["uri"]);        
+        $otp = Factory::loadFromProvisioningUri(base64_decode($_GET["uri"]));
     }else{
         $otp = TOTP::create(null, 30);
         $otp->setLabel('demo@example.com');
-        header("Location: /?uri=".urlencode($otp->getProvisioningUri()));
+        header("Location: /?uri=".urlencode(base64_encode($otp->getProvisioningUri())));
         die();
     }
 
@@ -56,14 +61,14 @@
         <?php print('The OTP URI is <input type="text" value="'.$otp->getProvisioningUri().'" /> and should be copied and saved if you want to reproduce this key'); ?><br /><br />
         The below QR code can be scanned with Google Authenticator to add it to the list. Afterwards, this page and Google Authenticator should display the same numbers every refresh<br />
         <img src="data:image/png;base64,<?php print($qrCodeEncoded); ?>" /><br /><br />
-        <form method="GET">
-            Load OTP URI: <input type="text" placeholder="URI" name="uri" required /><input type="submit" value="Load" />
+        <form method="POST">
+            Load OTP URI: <input type="text" placeholder="URI" name="load" required /><input type="submit" value="Load" />
         </form>
         <br /><br />
         <form method="GET">
             Create Custom OTP URI<br />
-            Label: <input type="text" name="label" required /><br />
-            Issuer: <input type="text" name="issuer" /><br />
+            Label: <input type="text" name="label" placeholder="demo@example.com" required /><br />
+            Issuer: <input type="text" name="issuer" placeholder="Company (optional)" /><br />
             <input type="submit" value="Create" />
         </form>
     </body>
