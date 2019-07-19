@@ -12,6 +12,16 @@
     use Endroid\QrCode\QrCode;
     use Endroid\QrCode\Response\QrCodeResponse;
 
+    if(isset($_GET["label"]) && isset($_GET["issuer"]) && $_GET["label"] != ""){
+        $otp = TOTP::create(null, 30);
+        $otp->setLabel($_GET["label"]);
+        if($_GET["issuer"] != ""){
+            $otp->setIssuer($_GET["issuer"]);
+        }
+        header("Location: /?uri=".urlencode($otp->getProvisioningUri()));
+        die();
+    }
+
     if(isset($_GET["uri"]) && $_GET["uri"] != ""){
         $otp = Factory::loadFromProvisioningUri($_GET["uri"]);        
     }else{
@@ -44,7 +54,17 @@
         </h1>
         <br />
         <?php print('The OTP URI is <input type="text" value="'.$otp->getProvisioningUri().'" /> and should be copied and saved if you want to reproduce this key'); ?><br /><br />
-        The below QR code can be scanned with Google Authenticator to add it to the list. Afterwards, this page and Google Authenticator should display the same numbers<br />
-        <img src="data:image/png;base64,<?php print($qrCodeEncoded); ?>" />
+        The below QR code can be scanned with Google Authenticator to add it to the list. Afterwards, this page and Google Authenticator should display the same numbers every refresh<br />
+        <img src="data:image/png;base64,<?php print($qrCodeEncoded); ?>" /><br /><br />
+        <form method="GET">
+            Load OTP URI: <input type="text" placeholder="URI" name="uri" required /><input type="submit" value="Load" />
+        </form>
+        <br /><br />
+        <form method="GET">
+            Create Custom OTP URI<br />
+            Label: <input type="text" name="label" required /><br />
+            Issuer: <input type="text" name="issuer" /><br />
+            <input type="submit" value="Create" />
+        </form>
     </body>
 </html>
